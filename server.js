@@ -1,9 +1,18 @@
 require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
+
+const hpp = require('hpp');
+
+const cors = require('cors')
+const helmet = require('helmet');
+const compression = require('compression'); 
+
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+
+const fs = require('fs');
+const JWT_PRIVATE_KEY=fs.readFileSync(__dirname + '/./jwtRS256_level2.key', 'utf-8');
 
 const { 
 	authorizeRequest 
@@ -15,9 +24,6 @@ const {
 } = require('./middleware/sanitizers');
 
 
-// const JWT_REFRESH_LEVEL2 = process.env.JWT_REFRESH_LEVEL2
-// let refreshTokens = [];
-const JWT_AUTH_LEVEL2 = process.env.JWT_AUTH_LEVEL2
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const smsKey = process.env.SMS_SECRET_KEY;
@@ -25,8 +31,16 @@ const client = require('twilio')(accountSid, authToken);
 
 const app = express();
 
-app.use(express.json());
+// Middleware
+// Parse request
+app.use(express.urlencoded({ extended: true, limit: "1kb" }));
+app.use(express.json({ limit: "1kb" }));
+app.use(hpp());
+
+// Set headers and gzip response
 app.use(cors());
+app.use(helmet());
+app.use(compression());
 
 
 app.post('/sendOTP', sanitizeSendOTP, authorizeRequest, (req, res) => {
@@ -65,9 +79,18 @@ app.post('/verifyOTP', sanitizeVerifyOTP, authorizeRequest, (req, res) => {
 	let data = `${phone}.${otp}.${expires}`;
 	let newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	if (newCalculatedHash === hashValue) {
-		const accessToken = jwt.sign({ email: req.email, authLevel2: true }, JWT_AUTH_LEVEL2, { expiresIn: process.env.JWT_AUTH_EXPIRE });
-		// const refreshToken = jwt.sign({ }, JWT_REFRESH_LEVEL2, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
-		// refreshTokens.push(refreshToken);
+		const accessToken = 
+		jwt.sign(
+			{ 
+				email: req.email, 
+				authLevel2: true 
+			}, 
+			JWT_PRIVATE_KEY, 
+			{ 
+				expiresIn: process.env.JWT_EXPIRE,
+				algorithm: 'RS256'
+			}
+		);
 		res.status(200).json({success: true, accessToken});
 	} else {
 		return res.status(400).send("Incorrect OTP");
