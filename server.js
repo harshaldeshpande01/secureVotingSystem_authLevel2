@@ -11,12 +11,14 @@ const compression = require('compression');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
-const fs = require('fs');
-const JWT_PRIVATE_KEY=fs.readFileSync(__dirname + '/./jwtRS256_level2.key', 'utf-8');
-
 const { 
 	authorizeRequest 
 } = require("./middleware/authorize");
+
+const {
+	verifyLimiter,
+	sendLimiter
+} = require("./middleware/rateLImiters");
 
 const { 
 	sanitizeSendOTP, 
@@ -43,7 +45,7 @@ app.use(helmet());
 app.use(compression());
 
 
-app.post('/sendOTP', sanitizeSendOTP, authorizeRequest, (req, res) => {
+app.post('/sendOTP', sendLimiter, sanitizeSendOTP, authorizeRequest, (req, res) => {
 	const phone = req.body.phone;
 	const otp = Math.floor(100000 + Math.random() * 900000);
 	const ttl = 2 * 60 * 1000;
@@ -58,12 +60,12 @@ app.post('/sendOTP', sanitizeSendOTP, authorizeRequest, (req, res) => {
 			from: +13192532190,
 			to: phone
 		})
-		.then((messages) => res.status(200).send({ phone, hash: fullHash }))
-		.catch((err) => res.status(400).send("SMS could\'t be sent. Unverifird phone number")
+		.then((_messages) => res.status(200).send({ phone, hash: fullHash }))
+		.catch((_err) => res.status(400).send("SMS could\'t be sent. Unverifird phone number")
 		);
 });
 
-app.post('/verifyOTP', sanitizeVerifyOTP, authorizeRequest, (req, res) => {
+app.post('/verifyOTP', verifyLimiter, sanitizeVerifyOTP, authorizeRequest, (req, res) => {
 	const phone = req.body.phone;
 	const hash = req.body.hash;
 	const otp = req.body.otp;
@@ -85,7 +87,7 @@ app.post('/verifyOTP', sanitizeVerifyOTP, authorizeRequest, (req, res) => {
 				email: req.email, 
 				authLevel2: true 
 			}, 
-			JWT_PRIVATE_KEY, 
+			process.env.LEVEL2_PRIVATE_KEY,
 			{ 
 				expiresIn: process.env.JWT_EXPIRE,
 				algorithm: 'RS256'
