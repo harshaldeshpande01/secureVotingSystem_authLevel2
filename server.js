@@ -10,6 +10,7 @@ const compression = require('compression');
 
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const otpGenerator = require('otp-generator')
 
 const { 
 	authorizeRequest 
@@ -47,7 +48,8 @@ app.use(compression());
 
 app.post('/sendOTP', sendLimiter, sanitizeSendOTP, authorizeRequest, (req, res) => {
 	const phone = req.body.phone;
-	const otp = Math.floor(100000 + Math.random() * 900000);
+	const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
+	// const otp = Math.floor(100000 + Math.random() * 900000);
 	const ttl = 2 * 60 * 1000;
 	const expires = Date.now() + ttl;
 	const data = `${phone}.${otp}.${expires}`;
