@@ -1,0 +1,7 @@
+POST http://localhost:9996/api/authLevel2/sendOTP HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnNoYWwyNTAxMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjkxNzQyMDg4NTMxNSIsImF1dGhMZXZlbDEiOnRydWUsImlhdCI6MTYzNDk0NzIxMywiZXhwIjoxNjM0OTQ3NTEzfQ.Sm2ktAEsenUFfFL_7GsiZHpyiC0nEM6DKOX84O0g61RK46wGAQ8IF0kCjcL1ozCRBvQYIyrWH8Azr8BAC85aREB_pYlS3_MmwQ3e1FXbgtPXXon-wJNqx-naJCtvqHJzybkV07m9j1k3Qx2sorUXRhRQl7vipJuqKMmqJNz889w
+
+{
+  "phone": "917420885315"
+}
