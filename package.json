@@ -1,5 +1,5 @@
 {
-  "name": "SMS-OTP-Verify",
+  "name": "sms-otp-verify",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
