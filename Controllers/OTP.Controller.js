@@ -10,7 +10,7 @@ const client = require('twilio')(accountSid, authToken);
 exports.sendOTP = (req, res, _next) => {
 	const phone = req.body.phone;
 	const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
-	const ttl = 2 * 60 * 1000;
+	const ttl = 60 * 1000;
 	const expires = Date.now() + ttl;
 	const data = `${phone}.${otp}.${expires}`;
 	const hash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
@@ -22,9 +22,10 @@ exports.sendOTP = (req, res, _next) => {
 			from: +13192532190,
 			to: phone
 		})
-		.then((_messages) => res.status(200).send({ phone, hash: fullHash }))
-		.catch((_err) => res.status(400).send("SMS could\'t be sent. Unverified phone number")
-		);
+		// .then((_messages) => res.status(200).send({ phone, hash: fullHash }))
+		// .catch((_err) => res.status(400).send("SMS could\'t be sent. Unverified phone number")
+		// );
+    res.status(200).send({ phone, hash: fullHash })
 };
 
 exports.verifyOTP = (req, res, _next) => {
