@@ -1,9 +1,9 @@
-POST http://localhost:9996/api/authLevel2/sendOTP HTTP/1.1
+POST http://localhost:9996/api/authLevel2/verifyOTP HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnNoYWwyNTAxMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjkxNzQyMDg4NTMxNSIsImF1dGhMZXZlbDEiOnRydWUsImlhdCI6MTYzNTA0NTY4OSwiZXhwIjoxNjM1MDQ1OTg5fQ.6Z6mO4qBGMueJ4wvDQGZaHUc8AX7Idu36mCJ7JUnqWwDo71ij0I7BgqA15dpPj9Dvn3enLm4hq6Lj5Ikz5NPYAA9FlK3zsWI2KbzhLDLr2l5qyLyJqoom_m15bq0BCdsbAwE0i-_uLyEXaW9RTLYtw-gfwSZYAe7yr5qfTjzkGM
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnNoYWwyNTAxMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjkxNzQyMDg4NTMxNSIsImF1dGhMZXZlbDEiOnRydWUsImlhdCI6MTYzNTA4NzAyNCwiZXhwIjoxNjM1MDg3MzI0fQ.f90WoqzewOhzwdr-UamxkOR5OvziXwyzTzgsVSy7vv4IziV5yh6QfK-TmNow2dKGdmv0Qdcyr8487CApeToHEpo669X8nMZFVIVg-nvIBx7PK3dfBWJ6iMSSzSp0KRIBxDf3xsUVz4_3XP0WiXzlZrKkGVHo4jHd_11jyY_n7sk
 
 {
-  "otp": "426858",
+  "otp": "897395",
   "phone": "917420885315",
-  "hash": "17beab82223254b63308ecafec9e09ba038b13e6b77fb3fd65933820bcb432b3.1635045832339"
+  "hash": "6406288afa858371bff8d59a58ceef9ab9b0b9164d6a6b298940d0c835241e1b.1635087142424"
 }

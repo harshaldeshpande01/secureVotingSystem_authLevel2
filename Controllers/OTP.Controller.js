@@ -28,6 +28,20 @@ exports.sendOTP = (req, res, _next) => {
     res.status(200).send({ phone, hash: fullHash })
 };
 
+const getSignedToken = (type, email, key, expires) => {
+	return jwt.sign(
+	{ 
+		type,
+		email,
+		authLevel2: true 
+	}, 
+	key,
+	{ 
+		expiresIn: expires,
+		algorithm: 'RS256'
+	});
+}
+
 exports.verifyOTP = (req, res, _next) => {
 	const phone = req.body.phone;
 	const hash = req.body.hash;
@@ -44,19 +58,13 @@ exports.verifyOTP = (req, res, _next) => {
 	let data = `${phone}.${otp}.${expires}`;
 	let newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	if (newCalculatedHash === hashValue) {
-		const accessToken = 
-		jwt.sign(
-			{ 
-				email: req.email, 
-				authLevel2: true 
-			}, 
-			process.env.LEVEL2_PRIVATE_KEY,
-			{ 
-				expiresIn: process.env.JWT_EXPIRE,
-				algorithm: 'RS256'
-			}
-		);
-		res.status(200).json({success: true, accessToken});
+		const accessToken = getSignedToken('access', req.email, process.env.ACCESS_PRIVATE, process.env.ACCESS_EXPIRE);
+		const refreshToken = getSignedToken('refresh', req.email, process.env.REFRESH_PRIVATE, process.env.REFRESH_EXPIRE);
+		res.status(200).json({
+			success: true, 
+			accessToken, 
+			refreshToken
+		});
 	} else {
 		return res.status(400).send("Incorrect OTP");
 	}

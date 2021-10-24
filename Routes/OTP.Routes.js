@@ -24,6 +24,4 @@ router.post('/sendOTP', sendLimiter, authorizeRequest, sanitizeSendOTP, sendOTP)
 
 router.post('/verifyOTP', verifyLimiter, authorizeRequest, sanitizeVerifyOTP, verifyOTP)
 
-// router.post('/refresh-token', refreshToken)
-
 module.exports = router

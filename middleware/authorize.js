@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyOptions = {
-  expiresIn: '5min',
+  expiresIn: process.env.LEVEL1_EXPIRE,
   algorithms: ["RS256"]
 }
 
@@ -20,7 +20,7 @@ exports.authorizeRequest = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.LEVEL1_PUBLIC_KEY, verifyOptions);
+    const decoded = jwt.verify(token, process.env.LEVEL1_PUBLIC, verifyOptions);
     if(decoded) {
         req.email = decoded.email;
         next();

@@ -8,8 +8,8 @@ exports.sendLimiter = rateLimit({
 });
 
 exports.verifyLimiter = rateLimit({
-    windowMs: 2 * 60 * 1000, // 1 minute
-    max: 5, // Start blocking after 2 requests
+    windowMs: 60 * 1000, // 1 minute
+    max: 5, // Start blocking after 5 requests
     message: "Too many verify requests from this IP, please try again later",
     headers: true
 });
