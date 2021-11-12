@@ -58,8 +58,18 @@ exports.verifyOTP = (req, res, _next) => {
 	let data = `${phone}.${otp}.${expires}`;
 	let newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 	if (newCalculatedHash === hashValue) {
-		const accessToken = getSignedToken('access', req.email, process.env.ACCESS_PRIVATE, process.env.ACCESS_EXPIRE);
-		const refreshToken = getSignedToken('refresh', req.email, process.env.REFRESH_PRIVATE, process.env.REFRESH_EXPIRE);
+		const accessToken = getSignedToken(
+			'access', 
+			req.email, 
+			Buffer.from(process.env.ACCESS_PRIVATE , 'base64').toString('ascii'),
+			process.env.ACCESS_EXPIRE
+		);
+		const refreshToken = getSignedToken(
+			'refresh', 
+			req.email, 
+			Buffer.from(process.env.REFRESH_PRIVATE , 'base64').toString('ascii'),
+			process.env.REFRESH_EXPIRE
+		);
 		res.status(200).json({
 			success: true, 
 			accessToken, 

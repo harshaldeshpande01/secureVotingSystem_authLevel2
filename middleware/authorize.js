@@ -20,7 +20,11 @@ exports.authorizeRequest = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.LEVEL1_PUBLIC, verifyOptions);
+    const decoded = jwt.verify(
+      token, 
+      Buffer.from(process.env.LEVEL1_PUBLIC , 'base64').toString('ascii'),
+      verifyOptions
+    );
     if(decoded) {
         req.email = decoded.email;
         next();
