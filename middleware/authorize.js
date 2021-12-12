@@ -25,9 +25,10 @@ exports.authorizeRequest = async (req, res, next) => {
       Buffer.from(process.env.LEVEL1_PUBLIC , 'base64').toString('ascii'),
       verifyOptions
     );
+    console.log(decoded)
     if(decoded) {
-        req.id = decoded.id;
-        req.email = decoded.email;
+        req.uid = decoded.id;
+        req.uemail = decoded.email;
         next();
     }
     else {

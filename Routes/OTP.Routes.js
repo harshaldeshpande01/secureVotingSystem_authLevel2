@@ -20,8 +20,8 @@ const {
     verifyOTP
 } = require('../Controllers/OTP.Controller')
 
-router.post('/sendOTP', sendLimiter, sanitizeSendOTP, sendOTP)
+router.post('/sendOTP', sendLimiter, authorizeRequest, sanitizeSendOTP, sendOTP)
 
-router.post('/verifyOTP', verifyLimiter, sanitizeVerifyOTP, verifyOTP)
+router.post('/verifyOTP', verifyLimiter, authorizeRequest, sanitizeVerifyOTP, verifyOTP)
 
 module.exports = router

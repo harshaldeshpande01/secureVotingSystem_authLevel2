@@ -8,6 +8,7 @@ const smsKey = process.env.SMS_SECRET_KEY;
 const client = require('twilio')(accountSid, authToken);
 
 exports.sendOTP = (req, res, _next) => {
+	// console.log(req.uid, req.uemail, req.body)
 	const phone = req.body.phone;
 	const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
 	const ttl = 60 * 1000;
@@ -19,11 +20,14 @@ exports.sendOTP = (req, res, _next) => {
 	client.messages
 		.create({
 			body: `Your One Time Login Password For Secure Voting System is ${otp}`,
-			from: +13192532190,
+			from: +19894049210,
 			to: phone
 		})
 		// .then((_messages) => res.status(200).send({ phone, hash: fullHash }))
-		// .catch((_err) => res.status(400).send("SMS could\'t be sent. Unverified phone number")
+		// .catch((err) =>  {
+		// 	console.log(err)
+		// 	res.status(400).send("SMS could\'t be sent. Unverified phone number")
+		// }
 		// );
     res.status(200).send({ phone, hash: fullHash })
 };
@@ -61,15 +65,15 @@ exports.verifyOTP = (req, res, _next) => {
 	if (newCalculatedHash === hashValue) {
 		const accessToken = getSignedToken(
 			'access', 
-			req.id,
-			req.email, 
+			req.uid,
+			req.uemail, 
 			Buffer.from(process.env.ACCESS_PRIVATE , 'base64').toString('ascii'),
 			process.env.ACCESS_EXPIRE
 		);
 		const refreshToken = getSignedToken(
 			'refresh', 
-			req.id,
-			req.email, 
+			req.uid,
+			req.uemail, 
 			Buffer.from(process.env.REFRESH_PRIVATE , 'base64').toString('ascii'),
 			process.env.REFRESH_EXPIRE
 		);
