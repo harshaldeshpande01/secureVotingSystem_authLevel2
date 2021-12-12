@@ -1,9 +1,9 @@
-POST http://localhost:9996/api/authLevel2/verifyOTP HTTP/1.1
+POST http://localhost:9996/api/authLevel2/sendOTP HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhcnNoYWwyNTAxMjAwMUBnbWFpbC5jb20iLCJwaG9uZSI6IjkxNzQyMDg4NTMxNSIsImF1dGhMZXZlbDEiOnRydWUsImlhdCI6MTYzNTA4NzAyNCwiZXhwIjoxNjM1MDg3MzI0fQ.f90WoqzewOhzwdr-UamxkOR5OvziXwyzTzgsVSy7vv4IziV5yh6QfK-TmNow2dKGdmv0Qdcyr8487CApeToHEpo669X8nMZFVIVg-nvIBx7PK3dfBWJ6iMSSzSp0KRIBxDf3xsUVz4_3XP0WiXzlZrKkGVHo4jHd_11jyY_n7sk
 
 {
-  "otp": "897395",
+  "otp": "111",
   "phone": "917420885315",
-  "hash": "6406288afa858371bff8d59a58ceef9ab9b0b9164d6a6b298940d0c835241e1b.1635087142424"
+  "hash": "f241ae7e18f75520914df1d959e4bea1b4c4c6998e571f19253706fed50a29b8.1638683146030"
 }

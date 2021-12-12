@@ -28,10 +28,11 @@ exports.sendOTP = (req, res, _next) => {
     res.status(200).send({ phone, hash: fullHash })
 };
 
-const getSignedToken = (type, email, key, expires) => {
+const getSignedToken = (type, _id, email, key, expires) => {
 	return jwt.sign(
 	{ 
 		type,
+		_id,
 		email,
 		authLevel2: true 
 	}, 
@@ -60,12 +61,14 @@ exports.verifyOTP = (req, res, _next) => {
 	if (newCalculatedHash === hashValue) {
 		const accessToken = getSignedToken(
 			'access', 
+			req._id,
 			req.email, 
 			Buffer.from(process.env.ACCESS_PRIVATE , 'base64').toString('ascii'),
 			process.env.ACCESS_EXPIRE
 		);
 		const refreshToken = getSignedToken(
 			'refresh', 
+			req._id,
 			req.email, 
 			Buffer.from(process.env.REFRESH_PRIVATE , 'base64').toString('ascii'),
 			process.env.REFRESH_EXPIRE

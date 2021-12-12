@@ -26,6 +26,7 @@ exports.authorizeRequest = async (req, res, next) => {
       verifyOptions
     );
     if(decoded) {
+        req._id = decoded._id;
         req.email = decoded.email;
         next();
     }
